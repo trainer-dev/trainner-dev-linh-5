@@ -49,12 +49,17 @@ function utf8convert($str) {
 
 if(isset($_POST["submit"])){
     $string = test_input($_POST["comment"]);
+    $substr = $_POST["element"];
 
     /**
      * Tính số lần xuất hiện của element
      */
-    $substr = $_POST["element"];
-    $count = substr_count($string,$substr);
+    function countElement($string,$substr)
+    {
+        $str = utf8convert($string);
+        $count = substr_count($str, $substr);
+        echo $count;
+    }
 
     /**
      * Danh sách các từ chứa các ký tự
@@ -63,12 +68,13 @@ if(isset($_POST["submit"])){
 
     function getWord($string,$key)
     {
-        $array = explode(" ",strtolower($string));
-
+        $str = utf8convert($string);
+        $array = explode(" ", strtolower($str));
+        $strArray = explode(" ", $string);
         for ($i = 0; $i < count($array); $i++) {
-            $a = strpos($array[$i],$key);
-            if($a!==false){
-                echo $array[$i].", ";
+            $a = strpos($array[$i], $key);
+            if ($a !== false) {
+                echo $strArray[$i].",";
             }
         }
     }
@@ -76,7 +82,7 @@ if(isset($_POST["submit"])){
     /**
      * Đoạn văn bản với các từ có ký tự được in đậm
      */
-    function Paint($string,$key)
+    function paintElement($string,$key)
     {
         $str = utf8convert($string);
         $array = explode(" ",strtolower($str));
@@ -94,11 +100,12 @@ if(isset($_POST["submit"])){
     /**
      * result
      */
-    echo "Numbers of time appears: ".$count."<br><br>";
+    echo "Numbers of time appears: ";
+    echo countElement($string,$substr)."<br><br>";
     echo "List element: ";
     echo getWord($string,$substr)."<br><br>";
     echo "Full para: ";
-    echo Paint($string,$substr);
+    echo paintElement($string,$substr);
 }
 
 function test_input($data) {
